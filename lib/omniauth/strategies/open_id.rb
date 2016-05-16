@@ -32,6 +32,7 @@ module OmniAuth
         lambda{|env| [401, {"WWW-Authenticate" => Rack::OpenID.build_header(
           :identifier => identifier,
           :return_to => callback_url,
+          :trust_root => %r{^(?:https?://)?([^/]+)}.match(callback_url) {|m| m[1]},
           :required => options.required,
           :optional => options.optional,
           :method => 'post'
